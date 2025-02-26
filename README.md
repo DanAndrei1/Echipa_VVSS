@@ -7,5 +7,5 @@ Membri:
 <ol>
   <li><b><a href="https://github.com/andreikeri">Cheran Andrei🚓</a></b> 232/1 </li>
   <li><b><a href="https://github.com/irchit">Chițea Răzvan⚠️</a></b> 232/1 </li>
-  <li><b><a href="https://github.com/andreikeri">Cojocaru Dan-Andrei🍗</a></b> 232/2 </li>
+  <li><b><a href="https://github.com/DanAndrei1">Cojocaru Dan-Andrei🍗</a></b> 232/2 </li>
 </ol>
