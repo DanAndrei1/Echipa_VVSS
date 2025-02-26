@@ -1,5 +1,5 @@
 # Echipa_VVSS
-
+<i>VVS💎</i>
 Echipa pentru diciplina Verificarea și Validarea Sistemelor Soft, Universitatea Babeș-Bolyai
 
 Membri:
