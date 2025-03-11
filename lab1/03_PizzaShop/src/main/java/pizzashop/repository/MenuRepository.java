@@ -8,16 +8,15 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class MenuRepository {
-    private static String filename = "data/menu.txt";
     private List<MenuDataModel> listMenu;
 
     public MenuRepository(){
     }
 
     private void readMenu(){
-        //ClassLoader classLoader = MenuRepository.class.getClassLoader();
+        String filename = "data/menu.txt";
         File file = new File(filename);
-        this.listMenu= new ArrayList();
+        this.listMenu= new ArrayList<>();
         BufferedReader br = null;
         try {
             br = new BufferedReader(new FileReader(file));
@@ -36,7 +35,7 @@ public class MenuRepository {
 
     private MenuDataModel getMenuItem(String line){
         MenuDataModel item=null;
-        if (line==null|| line.equals("")) return null;
+        if (line==null|| line.isEmpty()) return null;
         StringTokenizer st=new StringTokenizer(line, ",");
         String name= st.nextToken();
         double price = Double.parseDouble(st.nextToken());
