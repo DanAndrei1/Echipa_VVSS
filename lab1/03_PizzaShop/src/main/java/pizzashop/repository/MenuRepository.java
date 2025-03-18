@@ -13,12 +13,13 @@ public class MenuRepository {
     public MenuRepository(){
     }
 
-    private void readMenu(){
+    private void readMenu() throws IOException {
         String filename = "data/menu.txt";
         File file = new File(filename);
         this.listMenu= new ArrayList<>();
         BufferedReader br = null;
-        try {
+        try
+        {
             br = new BufferedReader(new FileReader(file));
             String line = null;
             while((line=br.readLine())!=null){
@@ -26,10 +27,23 @@ public class MenuRepository {
                 listMenu.add(menuItem);
             }
             br.close();
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("File Not Found");
+            System.out.println(e.getMessage());
             e.printStackTrace();
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
+            System.out.println("Error reading file");
+            System.out.println(e.getMessage());
             e.printStackTrace();
+        }
+        finally
+        {
+            assert br != null;
+            br.close();
         }
     }
 
@@ -44,7 +58,12 @@ public class MenuRepository {
     }
 
     public List<MenuDataModel> getMenu(){
-        readMenu();//create a new menu for each table, on request
+        try {
+            readMenu();//create a new menu for each table, on request
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
         return listMenu;
     }
 }

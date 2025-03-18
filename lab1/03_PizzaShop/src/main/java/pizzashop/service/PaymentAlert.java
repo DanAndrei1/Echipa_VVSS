@@ -45,6 +45,7 @@ public class PaymentAlert implements PaymentOperation {
         paymentAlert.getButtonTypes().setAll(cardPayment, cashPayment, cancel);
         Optional<ButtonType> result = paymentAlert.showAndWait();
         if (result.isPresent()) {
+
             if (result.get() == cardPayment) {
                 cardPayment();
                 service.addPayment(tableNumber, PaymentType.CARD, totalAmount);

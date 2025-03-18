@@ -48,14 +48,20 @@ public class PaymentRepository {
 
     public void add(Payment payment){
         paymentList.add(payment);
-        writeAll();
+        try {
+            writeAll();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
     }
 
     public List<Payment> getAll(){
         return paymentList;
     }
 
-    public void writeAll(){
+    public void writeAll() throws IOException {
         File file = new File(filename);
 
         BufferedWriter bw = null;
@@ -67,8 +73,17 @@ public class PaymentRepository {
                 bw.newLine();
             }
             bw.close();
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
+            System.out.println("File exception");
+            System.out.println(e.getMessage());
+        }
+        finally
+        {
+            assert bw != null;
+            bw.close();
         }
     }
 
