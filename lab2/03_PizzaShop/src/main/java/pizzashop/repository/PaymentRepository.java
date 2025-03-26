@@ -47,7 +47,25 @@ public class PaymentRepository {
     }
 
     public void add(Payment payment){
-        paymentList.add(payment);
+
+        try
+        {
+            if (payment.getAmount() < 0 || payment.getAmount() > 1000)
+            {
+                throw new Exception("Amount must be between 0 and 1000.");
+            }
+            if (payment.getTableNumber() < 1 || payment.getTableNumber() > 8)
+            {
+                throw new Exception("Table number must be between 1 and 8.");
+            }
+            paymentList.add(payment);
+            System.out.println("ADDED");
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+
         try {
             writeAll();
         }
