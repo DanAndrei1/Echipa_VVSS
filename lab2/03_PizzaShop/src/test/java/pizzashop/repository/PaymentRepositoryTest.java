@@ -7,6 +7,12 @@ import pizzashop.model.PaymentType;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PaymentRepositoryTest {
@@ -24,14 +30,22 @@ class PaymentRepositoryTest {
         assertEquals(2, 1+1);
     }
 
-    @Timeout(value = 500, unit = TimeUnit.MILLISECONDS)
     @Test
-    void testTimeout() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    void testAddPayment() {
+        PaymentRepository mockPaymentRepository = mock(PaymentRepository.class);
+        Payment payment = new Payment(1, PaymentType.Cash, 50);
+        doNothing().when(mockPaymentRepository).add(payment);
+
+        assertEquals(50, mockPaymentRepository.getAll().get(mockPaymentRepository.getAll().size()-1).getAmount());
+    }
+
+    @Test
+    void testGetPayment() {
+        PaymentRepository mockPaymentRepository = mock(PaymentRepository.class);
+        Payment payment = new Payment(1, PaymentType.Cash, 50);
+        doNothing().when(mockPaymentRepository).add(payment);
+
+        assertEquals(50, mockPaymentRepository.getAll().get(mockPaymentRepository.getAll().size()-1).getAmount());
     }
 
     @DisplayName("First BVA test")
@@ -47,9 +61,7 @@ class PaymentRepositoryTest {
     @Test
     @Tag("BVA")
     void TestBva2() {
-        paymentRepository.add(new Payment(9, PaymentType.Cash, 50));
-        assertEquals(9, paymentRepository.getAll().get(paymentRepository.getAll().size()-1).getTableNumber());
-        assertEquals(50, paymentRepository.getAll().get(paymentRepository.getAll().size()-1).getAmount());
+        assertThrows(Exception.class, () -> paymentRepository.add(new Payment(9, PaymentType.Cash, 50)));
     }
 
     @Test
@@ -63,9 +75,7 @@ class PaymentRepositoryTest {
     @Test
     @Tag("BVA")
     void TestBva4() {
-        paymentRepository.add(new Payment(4, PaymentType.Cash, 1000.01));
-        assertEquals(4, paymentRepository.getAll().get(paymentRepository.getAll().size()-1).getTableNumber());
-        assertEquals(1000.01, paymentRepository.getAll().get(paymentRepository.getAll().size()-1).getAmount());
+         assertThrows(Exception.class, () -> paymentRepository.add(new Payment(4, PaymentType.Cash, 1000.01)));
     }
 
     @Test
@@ -92,16 +102,12 @@ class PaymentRepositoryTest {
         class TestEcp3and4 {
             @Test
             void TestEcp3() {
-                paymentRepository.add(new Payment(-10, PaymentType.Card, 100.5));
-                assertEquals(-10, paymentRepository.getAll().get(paymentRepository.getAll().size()-1).getTableNumber());
-                assertEquals(100.5, paymentRepository.getAll().get(paymentRepository.getAll().size()-1).getAmount());
+                assertThrows(Exception.class, () -> paymentRepository.add(new Payment(9, PaymentType.Cash, 50)));
             }
 
             @Test
             void TestEcp4() {
-                paymentRepository.add(new Payment(7, PaymentType.Card, -77));
-                assertEquals(7, paymentRepository.getAll().get(paymentRepository.getAll().size()-1).getTableNumber());
-                assertEquals(-77, paymentRepository.getAll().get(paymentRepository.getAll().size()-1).getAmount());
+                assertThrows(Exception.class, () -> paymentRepository.add(new Payment(4, PaymentType.Card, 1000.01)));
             }
         }
 

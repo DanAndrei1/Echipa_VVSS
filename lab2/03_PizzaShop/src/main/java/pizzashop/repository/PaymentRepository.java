@@ -63,7 +63,7 @@ public class PaymentRepository {
         }
         catch (Exception e)
         {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
 
         try {
