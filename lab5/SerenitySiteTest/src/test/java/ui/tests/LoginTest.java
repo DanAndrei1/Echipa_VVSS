@@ -1,0 +1,45 @@
+package ui.tests;
+
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import net.thucydides.core.annotations.Managed;
+import net.thucydides.core.annotations.Steps;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.WebDriver;
+import ui.pages.LoginPage;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(SerenityJUnit5Extension.class)
+public class LoginTest {
+
+    @Managed
+    WebDriver driver;
+
+    @Steps
+    LoginPage loginPage;
+
+    private final String baseUrl = "https://magento.softwaretestingboard.com";
+
+    @Test
+    void should_login_successfully_with_valid_credentials() {
+        loginPage.setDefaultBaseUrl(baseUrl);
+        loginPage.openLoginForm();
+
+        loginPage.loginAs("dan@joicdw.com", "Test@123");
+
+        assertThat(driver.getTitle())
+                .containsIgnoringCase("Home Page");
+    }
+
+    @Test
+    void should_fail_login_with_invalid_credentials() {
+        loginPage.setDefaultBaseUrl(baseUrl);
+        loginPage.openLoginForm();
+
+        loginPage.loginAs("wrong@example.com", "WrongPassword");
+
+        assertThat(loginPage.getErrorMessage())
+                .contains("The account sign-in was incorrect");
+    }
+}

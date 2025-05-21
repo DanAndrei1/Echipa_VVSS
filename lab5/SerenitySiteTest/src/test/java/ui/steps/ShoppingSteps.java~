@@ -1,0 +1,70 @@
+package ui.steps;
+
+import net.serenitybdd.core.annotations.findby.By;
+import net.serenitybdd.core.steps.UIInteractionSteps;
+import net.thucydides.core.annotations.Step;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import ui.pages.CheckoutPage;
+import ui.pages.ProductPage;
+
+import java.time.Duration;
+
+import static net.serenitybdd.core.Serenity.getDriver;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class ShoppingSteps extends UIInteractionSteps {
+
+    ProductPage productPage;
+    CheckoutPage checkoutPage;
+
+    @Step("Open product '{0}' and add to cart")
+    public void addProductToCart(String productUrlKey) {
+        productPage.openUrl("http://magento.softwaretestingboard.com/" + productUrlKey + ".html");
+        productPage.addItemToCart("1");
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+
+        WebElement showCartButton = wait.until(
+                ExpectedConditions.elementToBeClickable(By.cssSelector("a.action.showcart"))
+        );
+        showCartButton.click();
+
+        WebElement checkoutButton = wait.until(
+                ExpectedConditions.elementToBeClickable(By.cssSelector("button#top-cart-btn-checkout"))
+        );
+        checkoutButton.click();
+    }
+
+    @Step("Complete checkout with Check / Money Order")
+    public void checkoutWithCheckMoneyOrder() {
+        checkoutPage.fillShippingAddressIfNeeded();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+
+        // Wait and click on "Check / Money order" payment option (usually has a more stable selector)
+        WebElement checkMoneyOrderRadio = wait.until(
+                ExpectedConditions.elementToBeClickable(By.name("ko_unique_1"))
+        );
+        if (!checkMoneyOrderRadio.isSelected()) {
+            checkMoneyOrderRadio.click();
+        }
+
+        // Place the order
+        WebElement placeOrderButton = wait.until(
+                ExpectedConditions.elementToBeClickable(By.cssSelector("button.action.continue.primary"))
+        );
+        placeOrderButton.click();
+    }
+
+    @Step("Verify order was placed")
+    public void shouldSeeSuccessMessage() {
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+
+        boolean message = wait.until(
+                ExpectedConditions.elementToBeSelected(By.cssSelector("estimated-label"))
+        );
+        assertTrue(message);
+    }
+}

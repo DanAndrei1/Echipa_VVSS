@@ -1,0 +1,48 @@
+package ui.pages;
+
+import net.serenitybdd.core.annotations.findby.FindBy;
+import net.serenitybdd.core.pages.PageObject;
+import net.thucydides.core.annotations.DefaultUrl;
+import org.openqa.selenium.WebElement;
+
+import java.time.Duration;
+
+@DefaultUrl("https://magento.softwaretestingboard.com")
+public class ProductPage extends PageObject {
+
+    @FindBy(css = "input#qty")
+    WebElement quantityInput;
+
+    @FindBy(css = ".swatch-option.color")
+    WebElement firstColorOption;
+
+    @FindBy(css = ".swatch-option.text")
+    WebElement firstSizeOption;
+
+    @FindBy(css = "button#product-addtocart-button")
+    WebElement addToCart;
+
+    @FindBy(css = "a.action.showcart")
+    WebElement showCart;
+
+    public void selectColor() {
+        firstColorOption.click();
+        firstSizeOption.click();
+    }
+
+    public void setQuantity(String quantity) {
+        quantityInput.clear();
+        quantityInput.sendKeys(quantity);
+    }
+
+    public void addItemToCart(String quantity) {
+        setQuantity(quantity);
+        selectColor();
+        addToCart.click();
+    }
+
+    public void viewCart() {
+        withTimeoutOf(Duration.ofSeconds(5)).find("$(button#top-cart-btn-checkout)").click();
+    }
+}
+

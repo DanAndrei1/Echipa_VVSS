@@ -1,0 +1,15 @@
+package com.example.magento.pages;
+
+import net.serenitybdd.core.pages.PageObject;
+import net.serenitybdd.core.annotations.findby.FindBy;
+import org.openqa.selenium.WebElement;
+
+public class HomePage extends PageObject {
+
+    @FindBy(css = ".logo")
+    WebElement logo;
+
+    public boolean isLogoVisible() {
+        return logo.isDisplayed();
+    }
+}

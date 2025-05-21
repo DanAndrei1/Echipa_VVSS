@@ -1,0 +1,19 @@
+package com.example.magento.tests;
+
+import com.example.magento.steps.HomeSteps;
+import org.junit.jupiter.api.Test;
+import net.serenitybdd.junit5.SerenityTest;
+import net.thucydides.core.annotations.Steps;
+
+@SerenityTest
+public class HomePageTest {
+
+    @Steps
+    HomeSteps steps;
+
+    @Test
+    public void should_display_homepage_logo() {
+        steps.openHomePage();
+        steps.verifyLogoIsVisible();
+    }
+}
